@@ -19,19 +19,18 @@ public class Language {
     private static final String TRANSLATIONS_PATH = "/assets/lang";
 
     static {
-        loadLanguage();
+        Locale locale = Locale.getDefault();
+        String defaultLang = locale.getLanguage().equals("ru") ? "ru_RU" : "en_US";
+        loadLanguage(defaultLang);
     }
 
-    private static void loadLanguage() {
-        Locale locale = Locale.getDefault();
-        currentLanguage = locale.getLanguage().equals("ru") ? "ru_RU" : "en_US";
+    public static boolean loadLanguage(String langKey) {
+        String resourcePath = TRANSLATIONS_PATH + langKey + ".json";
 
-        String resourcePath = TRANSLATIONS_PATH + currentLanguage + ".json";
-        
         try (InputStream in = Language.class.getResourceAsStream(resourcePath)) {
             if (in == null) {
                 System.err.println("[Languagger]: Языковой файл не найден: " + resourcePath);
-                return;
+                return false;
             }
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -47,9 +46,12 @@ public class Language {
                 translations.put(key, json.getString(key));
             }
 
+            currentLanguage = langKey;
             System.out.println("[Languagger]: Загружен язык: " + currentLanguage);
+            return true;
         } catch (Exception e) {
             System.err.println("[Languagger]: Ошибка загрузки перевода: " + currentLanguage);
+            return false;
         }
     }
 

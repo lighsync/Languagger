@@ -37,6 +37,9 @@ String text = Language.getText("test");
 
 // Получить текущий язык
 String lang = Language.getCurrentLanguage();
+
+// Загрузить новый язык по коду
+Language.loadLanguage("ru_RU"); // например ru_RU
 ```
 
 3. **Добавьте assets в classpath**  
@@ -64,6 +67,7 @@ String lang = Language.getCurrentLanguage();
 - Загружает соответствующий JSON-файл из `assets/lang/`.
 - Все переводы доступны через статический метод `getText(String key)`.
 - Если ключ не найден — возвращается сам ключ.
+- Также вы можете сменить язык конструкцией `loadLanguage(String langKey)`
 
 ## Лицензия
 
